@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/plugins/Densite" >
+        <file>icon.png</file>
+        <file>images/icon_grand.png</file>
+    </qresource>
+</RCC>
