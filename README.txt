@@ -1,32 +1,7 @@
-Plugin Builder Results
+Un chargé de mission souhaite connaître la surface et le pourcentage de différentes 
+classes d'occupation des sols sur différents types de territoire de son département des Hautes-Pyrénées (65).
 
-Your plugin DensiteOCS was created in:
-    C:/Users/abdou/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/Densite
+Pour cela on va utiliser une base de données fournie par le CESBIO sur le dernier millésime disponible et on 
+synthétisera l'information sur 7 classes d'OCS.
 
-Your QGIS plugin directory is located at:
-    C:/Users/abdou/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins
-
-What's Next:
-
-  * Copy the entire directory containing your new plugin to the QGIS plugin
-    directory
-
-  * Compile the resources file using pyrcc5
-
-  * Run the tests (``make test``)
-
-  * Test the plugin by enabling it in the QGIS plugin manager
-
-  * Customize it by editing the implementation file: ``densite.py``
-
-  * Create your own custom icon, replacing the default icon.png
-
-  * Modify your user interface by opening DensiteOCS_dialog_base.ui in Qt Designer
-
-  * You can use the Makefile to compile your Ui and resource files when
-    you make changes. This requires GNU make (gmake)
-
-For more information, see the PyQGIS Developer Cookbook at:
-http://www.qgis.org/pyqgis-cookbook/index.html
-
-(C) 2011-2018 GeoApt LLC - geoapt.com
+L'utilisateur doit pouvoir indiquer un territoire (à savoir une commune ou un EPCI) sur lequel il veut obtenir ces informations agrégée.
