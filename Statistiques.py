@@ -108,22 +108,32 @@ class Statistiques:
             requete = requete.format(requeteComplet)
 
             resultat = self.connectionBD(requete)
-            self.camembertStat(resultat)
+            self.camembertStat(resultat, listeCommunes)
 
-    def camembertStat(self, data_stat):
+    def camembertStat(self, data_stat, listeCommunes):
         """Pour faire de la réprésentation statistique"""
 
-        plt.figure(figsize=(8, 8))
+        plt.figure(figsize=(10, 5))
         enregistrement = []
         labels = []
         nom = []
         explode = []
+        colors = []
+
+        categorie = ['Territoires artificialisés', 'Territoire agricole', 'Forêts et milieux semi-naturels',
+                     'Zones humides', 'Surfaces en eau']
+        codeCouleur = ["#e6004d", "#ffffa8", "#80ff00", "#a6a6ff", "#00ccf2"]
         for (nom_classe, superficie), exp in zip(data_stat, [0, 0.2, 0, 0, 0]):
 
             enregistrement.append(superficie)
             labels.append(f"{nom_classe}\n{int(superficie/10000)} ha")
             explode.append(exp)
             nom.append(nom_classe)
+
+            for couleur, code in zip(categorie, codeCouleur):
+                if couleur == nom_classe:
+                    colors.append(code)
+                    break
 
         # # x = [1, 2, 3, 4, 5]
         # # resultat : [('Territoire agricole', Decimal('6942046.68'))]
@@ -136,18 +146,23 @@ class Statistiques:
         #            pctdistance=1, labeldistance=1.4)  # ,
         #            #  shadow=True)
         # plt.legend()
-        #
+
         # plt.show()
 
         ####################################
         labels = labels
         sizes = enregistrement
-        colors = ['red', 'green', 'yellow', "blue", "lightskyblue"]
+        # colors = ['red', 'green', 'yellow', "blue", "lightskyblue"]
 
-        plt.pie(sizes, labels=labels, colors=colors,
-                autopct='%1.1f%%', shadow=True, startangle=90)
+        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=70)  # shadow=True,
 
         plt.axis('equal')
+
+        titre = ', '.join(listeCommunes)
+
+        plt.title(titre, fontname="Times New Roman", size=15, weight='bold')
+
+        # plt.title(result_2)
 
         plt.savefig('PieChart01.png')
         plt.show()

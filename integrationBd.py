@@ -157,7 +157,7 @@ class IntegrationBd:
         for feat_commune in commune_table.getFeatures():  # request
             if feat_commune.geometry() and feat_commune.geometry() != NULL and feat_commune.geometry() not in doublonGeom:
                 data_global.append((feat_commune[champs_nom], feat_commune[champs_insee],
-                                    int(feat_commune[champs_pop]), int(feat_commune["code_dept"]), feat_commune.geometry().asWkt()))
+                                    int(feat_commune[champs_pop]), feat_commune["code_dept"], feat_commune.geometry().asWkt()))
                 doublonGeom.append(feat_commune.geometry())
                 # compte += 1
                 # if compte > 3:
