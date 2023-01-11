@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>587</width>
+    <width>589</width>
     <height>766</height>
    </rect>
   </property>
@@ -128,7 +128,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab_importation">
       <attribute name="title">
        <string>1. IMPORTER DANS QGIS</string>
       </attribute>
@@ -178,7 +178,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>Indiquez simplément le repertoire dans lequel se trouve les fichiers GraceTHD</string>
+                <string>Indiquez simplément le repertoire dans lequel se trouve les fichiers</string>
                </property>
               </widget>
              </item>
@@ -332,7 +332,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="generateurCouche">
+     <widget class="QWidget" name="tab_integration">
       <attribute name="title">
        <string>2. INTEGRATION BD</string>
       </attribute>
@@ -412,23 +412,10 @@
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer_16">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
             <widget class="QComboBox" name="comboBox_tb_commune">
              <property name="minimumSize">
               <size>
-               <width>120</width>
+               <width>150</width>
                <height>0</height>
               </size>
              </property>
@@ -456,6 +443,55 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_Commune_6">
+             <property name="font">
+              <font>
+               <pointsize>7</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Champs Nom &lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBoxChampsNom">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="sizeIncrement">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="currentIndex">
+              <number>-1</number>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -688,7 +724,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Shpa OCS&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt; *&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Shp OCS&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt; *&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
@@ -696,14 +732,22 @@
               <widget class="QComboBox" name="comboBox_tb_OCS">
                <property name="minimumSize">
                 <size>
-                 <width>120</width>
+                 <width>150</width>
                  <height>0</height>
                 </size>
                </property>
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
                 </font>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>16</width>
+                 <height>16</height>
+                </size>
                </property>
                <item>
                 <property name="text">
@@ -765,6 +809,8 @@
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
                 </font>
                </property>
                <property name="currentIndex">
@@ -843,79 +889,6 @@
          <item row="6" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout_19">
            <item>
-            <spacer name="horizontalSpacer_43">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_Commune_6">
-             <property name="font">
-              <font>
-               <pointsize>7</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Nom &lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBoxChampsNom">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="sizeIncrement">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="currentIndex">
-              <number>-1</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_44">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
             <widget class="QLabel" name="label_Commune_7">
              <property name="font">
               <font>
@@ -925,7 +898,7 @@
               </font>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;INSEE &lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Champs INSEE &lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -955,12 +928,27 @@
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
               </font>
              </property>
              <property name="currentIndex">
               <number>-1</number>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QLabel" name="label_19">
@@ -972,12 +960,12 @@
               </font>
              </property>
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Population&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt; *&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Champs Code DEPT&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:10pt; color:#ff0000;&quot;&gt; *&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBoxChampsPopulation">
+            <widget class="QComboBox" name="comboBoxChampsCodeDept">
              <property name="minimumSize">
               <size>
                <width>120</width>
@@ -987,6 +975,8 @@
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
               </font>
              </property>
              <item>
@@ -1002,9 +992,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_remplacem_renforcem">
+     <widget class="QWidget" name="tab_stat">
       <attribute name="title">
-       <string>3. Statistiques</string>
+       <string>3. STATISTIQUES</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_13">
        <item row="2" column="0">
@@ -1111,6 +1101,12 @@
             <layout class="QHBoxLayout" name="horizontalLayout_10">
              <item>
               <widget class="QComboBox" name="comboBox_Stat">
+               <property name="font">
+                <font>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
                <property name="contextMenuPolicy">
                 <enum>Qt::DefaultContextMenu</enum>
                </property>
@@ -1177,7 +1173,7 @@
              </property>
              <column>
               <property name="text">
-               <string>Valeurs de filtre</string>
+               <string>COMMUNES</string>
               </property>
              </column>
             </widget>

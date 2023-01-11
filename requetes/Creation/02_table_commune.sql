@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS densite_65.commune (
     nom varchar(255),
     insee varchar(5),
     population integer,
-	code_dept integer,
+	code_dept varchar(5),
     superficie double precision,
     date_update date DEFAULT now(),
     user_update varchar(255) DEFAULT user,

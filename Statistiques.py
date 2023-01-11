@@ -1,39 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from qgis.core import Qgis, QgsProject, QgsVectorLayer, QgsLayerTreeLayer, QgsDataSourceUri, QgsRasterLayer
-from qgis.utils import iface
+from .integrationBd import IntegrationBd
 import psycopg2
-import os
-import re
-import json
-
 import matplotlib.pyplot as plt
-import pandas as pd
+# import os
+# import json
+# import pandas as pd
 
-class Statistiques:
+
+class Statistiques(IntegrationBd):
     """ Second pour contenir quelques fonctions qui seront utilisées dans le fichier principale CheckOptyce.py """
 
-    def __init__(self):
-        """Le constructeur de ma classe
-        Il prend pour attribut de classe les *** """
-
-        home = os.path.expanduser("~")
-        self.fichier = f"{home}/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/Densite/"
-
-        idDatabase = []
-        home = os.path.expanduser("~")
-        self.fichier = f"{home}/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/Densite/"
-
-        with open(f"{self.fichier}Connexion/id_mdp.json", "r") as f:
-            identifiants = json.load(f)
-
-        for cle, valeur in identifiants.items():
-            idDatabase.append(valeur)
-
-        [self.user, self.password, self.host, self.port, self.bd] = idDatabase
-
-    def tempsEcouler(self, seconde):
+    def temps_ecouler(self, seconde):
         seconds = seconde % (24 * 3600)
         hour = int(seconds // 3600)
         seconds %= 3600
@@ -41,16 +20,12 @@ class Statistiques:
         seconds %= 60
         return f"{hour}h: {minutes}mn : {int(seconds)}sec" if hour > 0 else f"{minutes}mn : {int(seconds)}sec"
 
-    def alerteInfo(self, monMessage, duree=5):
-        """Fonction pour afficher un message d'information à destination de l'utilisateur"""
-        iface.messageBar().pushMessage("Message : ", monMessage, level=Qgis.Info, duration=duree)
-
-    def verificationIdentifiantConnexionDatabase(self):
+    def verification_identifiant_connexion_bd(self):
         """Pour ouvrir le fichier de connexion, permettant de récupérer les informations de connexion à
         la base de données"""
 
         # Identifiant et mot de passe de l'utilisateur de la base de données.
-        identifiantErronner = False
+        identifiant_erronner = False
 
         try:
             connection = psycopg2.connect(user=self.user,
@@ -62,55 +37,26 @@ class Statistiques:
             connection.cursor()
         except (Exception, psycopg2.Error) as error:
             print("Précision de l'erreur : ", error)
-            identifiantErronner = True
+            identifiant_erronner = True
 
-        return True if identifiantErronner else False
+        return True if identifiant_erronner else False
 
-    def connectionBD(self, requete):
-        """Pour se connecter à la base de données"""
-        connection = None
-        cursor = None
-        record = []
-
-        if requete:
-            try:
-                connection = psycopg2.connect(user=self.user,
-                                              password=self.password,
-                                              host=self.host,
-                                              port=self.port,
-                                              database=self.bd)
-
-                cursor = connection.cursor()
-
-                cursor.execute(requete)
-                record = cursor.fetchall()
-
-            except (Exception, psycopg2.Error) as error:
-                print(f"Erreur de connexion à la base de données PostgreSQL {error}")
-
-            finally:
-                # closing database connection.
-                if connection:
-                    cursor.close()
-                    connection.close()
-                    # self.alerteInfos(u"La requete a bien été executée", "T", "green")
-        return record
-
-    def generateur(self, listeCommunes):
+    def generateur(self, liste_communes):
         """"""
         chemin = f"{self.fichier}requetes/Selection/stat.sql"
         with open(chemin, 'r') as fd:
             requete = fd.read()
             fd.close()
 
-        requeteComplet = tuple(listeCommunes) if len(listeCommunes) > 1 else (f"('{listeCommunes[0]}')" if len(listeCommunes) == 1 else "")
-        if requeteComplet:
-            requete = requete.format(requeteComplet)
+        requete_complet = (tuple(liste_communes) if len(liste_communes) > 1 else (
+            f"('{liste_communes[0]}')" if len(liste_communes) == 1 else ""))
+        if requete_complet:
+            requete = requete.format(requete_complet)
 
-            resultat = self.connectionBD(requete)
-            self.camembertStat(resultat, listeCommunes)
+            resultat = self.connection_bd(requete)
+            self.realisation_camembert_stat(resultat, liste_communes)
 
-    def camembertStat(self, data_stat, listeCommunes):
+    def realisation_camembert_stat(self, data_stat, liste_communes):
         """Pour faire de la réprésentation statistique"""
 
         plt.figure(figsize=(10, 5))
@@ -122,47 +68,30 @@ class Statistiques:
 
         categorie = ['Territoires artificialisés', 'Territoire agricole', 'Forêts et milieux semi-naturels',
                      'Zones humides', 'Surfaces en eau']
-        codeCouleur = ["#e6004d", "#ffffa8", "#80ff00", "#a6a6ff", "#00ccf2"]
+        code_couleur = ["#e6004d", "#ffffa8", "#80ff00", "#a6a6ff", "#00ccf2"]
         for (nom_classe, superficie), exp in zip(data_stat, [0, 0.2, 0, 0, 0]):
 
             enregistrement.append(superficie)
-            labels.append(f"{nom_classe}\n{int(superficie/10000)} ha")
+            labels.append(f"{nom_classe}\n{int(superficie/10000)} hacode_dept")
             explode.append(exp)
             nom.append(nom_classe)
 
-            for couleur, code in zip(categorie, codeCouleur):
+            for couleur, code in zip(categorie, code_couleur):
                 if couleur == nom_classe:
                     colors.append(code)
                     break
 
-        # # x = [1, 2, 3, 4, 5]
-        # # resultat : [('Territoire agricole', Decimal('6942046.68'))]
-        # # plt.pie(enregistrement, labels=['A', 'B', 'C', 'D', 'E'],
-        # plt.pie(enregistrement, labels=labels,
-        #            colors=['red', 'green', 'yellow', "blue", "lightskyblue"],
-        #            # explode=[0, 0.2, 0, 0, 0],
-        #            explode=explode,
-        #            autopct=lambda enregistrement: str(round(enregistrement, 2)) + '%',
-        #            pctdistance=1, labeldistance=1.4)  # ,
-        #            #  shadow=True)
-        # plt.legend()
-
-        # plt.show()
-
         ####################################
         labels = labels
         sizes = enregistrement
-        # colors = ['red', 'green', 'yellow', "blue", "lightskyblue"]
 
         plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=70)  # shadow=True,
 
         plt.axis('equal')
 
-        titre = ', '.join(listeCommunes)
+        titre = ', '.join(liste_communes)
 
         plt.title(titre, fontname="Times New Roman", size=15, weight='bold')
-
-        # plt.title(result_2)
 
         plt.savefig('PieChart01.png')
         plt.show()

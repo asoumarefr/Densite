@@ -5,16 +5,16 @@
 [general]
 name=Densite d OCS
 qgisMinimumVersion=3.0
-description=Connaître la surface et le pourcentage de différentes classes d'occupation des sols sur différents types de territoire de son département des Hautes-Pyrénées.
+description=Traitement des données d'occupation des sols en France.
 
-version=0.1
+version=0.2
 author=SOUMARE Abdoulayi
 email=abdoulayisoumare@gmail.com
 
 about=Connaître la surface et le pourcentage de différentes classes d'occupation des sols sur différents types de territoire de son département des Hautes-Pyrénées.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/asoumarefr/Densite/issues
+repository=https://github.com/asoumarefr/Densite
 # End of mandatory metadata
 
 # Recommended items:
@@ -22,11 +22,16 @@ repository=http://repo
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 # changelog=
+ Version 0.2 :
+ * Camembert colorié en fonction des éléments d'occupations des sols.
+ * Supprimer de l'utilisateur inapproprié
+ * Changement du type de champs code_dept en text pour
+ * Développeur des commentaires
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags=Occupations des sols; EPCI; commune; France; densité; camembert
 
-homepage=http://homepage
+homepage=http://github.com/asoumarefr/
 category=Plugins
 icon=icon.png
 # experimental flag
