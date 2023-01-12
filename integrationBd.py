@@ -2,14 +2,11 @@
 # -*-coding:Utf-8-*-
 
 import os
-import psycopg2
+import psycopg2  # Utilise pour la connexion a la base de donnees
 import json
-from qgis.core import QgsProject, QgsExpression, QgsFeatureRequest, NULL
+from qgis.core import QgsProject, NULL
 # import pandas as pd
 # import numpy as np
-
-# Fichier creer poour contenir les fonctions qui font etre utilisees dans la mise en place du plugin C3A
-# import psycopg2 # Utilise pour la connexion a la base de donnees
 
 
 class IntegrationBd:
@@ -27,6 +24,14 @@ class IntegrationBd:
 
         id_database = (valeur for valeur in identifiants.values())
         [self.user, self.password, self.host, self.port, self.bd] = id_database
+
+    def temps_ecouler(self, seconde):
+        seconds = seconde % (24 * 3600)
+        hour = int(seconds // 3600)
+        seconds %= 3600
+        minutes = int(seconds // 60)
+        seconds %= 60
+        return f"{hour}h: {minutes}mn : {int(seconds)}sec" if hour > 0 else f"{minutes}mn : {int(seconds)}sec"
 
     def connection_bd(self, requete):
         """Pour se connecter à la base de données"""
@@ -142,10 +147,9 @@ class IntegrationBd:
                 data_global.append((int(feat_ocs[champs_code_ocs]), feat_ocs.geometry().asWkt()))
 
         return data_global
-    
+
     def recup_valeur_enregistrements_commune(self, table_commune, champs_nom, champs_insee, champs_dept):
         """Récupérer les données liées à la base de données"""
-
         commune_table = QgsProject.instance().mapLayersByName(table_commune)[0]
 
         data_global = []

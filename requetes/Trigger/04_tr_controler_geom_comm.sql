@@ -20,7 +20,6 @@ ELSEIF NEW.geom IN (SELECT DISTINCT geom FROM  densite_65.commune )
 	'id : % Commune %. Cette géométrie existe déjà', NEW.id, NEW.nom;
 RETURN NEW;
 
-
 END IF ;
 RETURN NEW;
 END;
@@ -37,7 +36,4 @@ FOR EACH ROW
 EXECUTE PROCEDURE densite_65.fc_check_erreur_comm();
 COMMENT ON TRIGGER tr_controle_geom_comm ON densite_65.commune IS 'Vérification des erreurs géométriques';
 
-
 GRANT EXECUTE ON FUNCTION densite_65.fc_check_erreur_comm() TO public;
-
-GRANT EXECUTE ON FUNCTION densite_65.fc_check_erreur_comm() TO asoumare;

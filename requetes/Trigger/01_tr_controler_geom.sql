@@ -39,5 +39,3 @@ COMMENT ON TRIGGER tr_controle_geom ON densite_65.ocs IS 'Vérification des erre
 
 
 GRANT EXECUTE ON FUNCTION densite_65.fc_check_erreur() TO public;
-
-GRANT EXECUTE ON FUNCTION densite_65.fc_check_erreur() TO asoumare;

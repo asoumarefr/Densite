@@ -41,7 +41,6 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-
 --- DROP TRIGGER IF EXISTS tr_maj_champs ON densite_65.ocs
 CREATE TRIGGER tr_maj_champs
 AFTER UPDATE OR INSERT
@@ -51,7 +50,4 @@ WHEN (pg_trigger_depth() = 0)
 EXECUTE PROCEDURE densite_65.fc_maj_champs();
 COMMENT ON TRIGGER tr_maj_champs ON densite_65.ocs IS 'MAJ des champs';
 
-
 GRANT EXECUTE ON FUNCTION densite_65.fc_maj_champs() TO public;
-
-GRANT EXECUTE ON FUNCTION densite_65.fc_maj_champs() TO asoumare;

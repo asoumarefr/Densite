@@ -51,7 +51,6 @@ import os.path
 
 class DensiteOCS:
     """QGIS Plugin Implementation."""
-    MSG_BOX_TITLE = "Densité d'occupation des sols"
 
     def __init__(self, iface):
         """Constructor.
@@ -122,7 +121,7 @@ class DensiteOCS:
 
         self.dlg.comboBox_Stat.activated.connect(self.integration_barre_recherche_stat)
         self.dlg.rafraichirUi_ToutSupprimer.clicked.connect(self.supprimer_donnees_communes)
-        self.dlg.rafraichirUi_Tout_Rafraichir.clicked.connect(self.rafraichir_liste_communes)
+        self.dlg.rafraichirUi_barre_recherche.clicked.connect(self.rafraichir_liste_communes)
 
         self.dlg.exportStat.clicked.connect(self.generer_statistiques)
 
@@ -363,7 +362,6 @@ class DensiteOCS:
                 regexp = re.compile(r'commune')
                 if regexp.search(valeur.lower()):
                     self.dlg.comboBox_tb_commune.setCurrentIndex(layer_list.index(valeur))
-
                     break
 
             self.dlg.textBrowser.clear()
@@ -413,11 +411,12 @@ class DensiteOCS:
         if efface:
             self.dlg.textBrowser.clear()
         self.dlg.textBrowser.setTextColor(QColor(couleur))
-        self.dlg.textBrowser.append(info + '\n')
+        self.dlg.textBrowser.append(f"{info}\n")
 
     def choix_du_dossier_import(self):
         """Fonction pour choisir le repertoire à partir duquel je souhaite IMPORTER des données"""
-        dirname = QFileDialog.getExistingDirectory(self.dlg, f"Sélectionner votre repertoire d'importation des fichiers", "")
+        dirname = QFileDialog.getExistingDirectory(self.dlg,
+                                                   f"Sélectionner votre repertoire d'importation des fichiers", "")
 
         # chemin = self.dlg.lienCheminImport.text()
         # On change le chemin accès par defaut
@@ -427,7 +426,7 @@ class DensiteOCS:
             os.chdir(dirname)
 
         else:
-            print("Le chemin indiqué est incorrect : ", dirname)
+            print(f"Le chemin indiqué est incorrect : {dirname}")
             self.dlg.boutonImport.setEnabled(False)
 
     def importation_donnees_dans_qgis(self):
@@ -502,7 +501,7 @@ class DensiteOCS:
 
     ############################################# STAT ###############################################
     def integration_barre_recherche_stat(self):
-        """Fonction qui permet d'ajouter des données des SRO depuis la barre de recherche"""
+        """Fonction qui permet d'ajouter la séléction des communes depuis la barre de recherche"""
         test_saisie = self.dlg.comboBox_Stat.currentText()
 
         valeur_commune = [self.dlg.tableWidget_ChoixFinal_Stat.item(a, 0).text() for a in
@@ -521,13 +520,13 @@ class DensiteOCS:
         if probleme_connexion:
             self.dlg.comboBox_Stat.clear()
 
-            message3 = f"""Vous n'avez pas accès à l'internet \nOU" 
+            message = f"""Vous n'avez pas accès à l'internet \nOU" 
                        \n\nVos identifiants de connexion sont incorrects. \nMerci de modifier le fichier de connexion
                        ci-dessous le lien pour insérer vos propres identifiants :\n
-                       C:/Users/NomDuPc/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/GenerateurC3A/
+                       C:/Users/NomDuPc/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/Densite/
                        Connexion/id_mdp.json"""
             self.dlg.textBrowser.setTextColor(QColor("red"))
-            self.dlg.textBrowser.append(f"{message3}\n")
+            self.dlg.textBrowser.append(f"{message}\n")
             self.dlg.progressBar.setValue(0)
 
         else:
@@ -542,8 +541,6 @@ class DensiteOCS:
             liste_communes = self.stat.connection_bd("""SELECT  nom
                                                     FROM   densite_65.commune 
                                                     GROUP BY nom;""")
-
-            # listeCollecte = [nom[0] for nom in liste_communes]
 
             self.liste_des_communes = [nom[0] for nom in liste_communes]
 
@@ -563,8 +560,7 @@ class DensiteOCS:
 
     def generer_statistiques(self):
         """Génération des statistiques"""
-
         valeur_filtre_final = [self.dlg.tableWidget_ChoixFinal_Stat.item(row, 0).text() for row in
-                             range(self.dlg.tableWidget_ChoixFinal_Stat.rowCount())]
-        
+                               range(self.dlg.tableWidget_ChoixFinal_Stat.rowCount())]
+
         self.stat.generateur(valeur_filtre_final)
