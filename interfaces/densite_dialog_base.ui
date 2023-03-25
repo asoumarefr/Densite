@@ -404,6 +404,7 @@
                <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
@@ -422,6 +423,9 @@
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <item>
@@ -451,6 +455,7 @@
                <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
@@ -486,6 +491,7 @@
                <pointsize>10</pointsize>
                <weight>50</weight>
                <bold>false</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="currentIndex">
@@ -672,8 +678,10 @@
                </property>
                <property name="font">
                 <font>
+                 <pointsize>9</pointsize>
                  <weight>50</weight>
                  <bold>false</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="text">
@@ -721,6 +729,7 @@
                  <pointsize>7</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="text">
@@ -741,6 +750,7 @@
                  <pointsize>9</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="iconSize">
@@ -776,6 +786,7 @@
                  <pointsize>7</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="text">
@@ -811,6 +822,7 @@
                  <pointsize>10</pointsize>
                  <weight>50</weight>
                  <bold>false</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="currentIndex">
@@ -895,6 +907,7 @@
                <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
@@ -930,6 +943,7 @@
                <pointsize>10</pointsize>
                <weight>50</weight>
                <bold>false</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="currentIndex">
@@ -957,6 +971,7 @@
                <pointsize>7</pointsize>
                <weight>75</weight>
                <bold>true</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
@@ -977,6 +992,7 @@
                <pointsize>9</pointsize>
                <weight>50</weight>
                <bold>false</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <item>
@@ -1069,7 +1085,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_25">
              <item>
-              <widget class="QPushButton" name="rafraichirUi_Tout_Rafraichir">
+              <widget class="QPushButton" name="rafraichirUi_barre_recherche">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1090,6 +1106,7 @@
                <pointsize>7</pointsize>
                <weight>50</weight>
                <bold>false</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="text">
@@ -1103,8 +1120,10 @@
               <widget class="QComboBox" name="comboBox_Stat">
                <property name="font">
                 <font>
+                 <pointsize>9</pointsize>
                  <weight>50</weight>
                  <bold>false</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="contextMenuPolicy">
@@ -1160,6 +1179,7 @@
                <pointsize>10</pointsize>
                <weight>75</weight>
                <bold>true</bold>
+               <strikeout>false</strikeout>
               </font>
              </property>
              <property name="editTriggers">
@@ -1209,8 +1229,10 @@
                </property>
                <property name="font">
                 <font>
+                 <pointsize>9</pointsize>
                  <weight>50</weight>
                  <bold>false</bold>
+                 <strikeout>false</strikeout>
                 </font>
                </property>
                <property name="text">

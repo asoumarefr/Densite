@@ -1,12 +1,7 @@
-#!/usr/bin/python
-# -*-coding:Utf-8-*-
-
 import os
-import psycopg2  # Utilise pour la connexion a la base de donnees
+import psycopg2
 import json
 from qgis.core import QgsProject, NULL
-# import pandas as pd
-# import numpy as np
 
 
 class IntegrationBd:
@@ -14,26 +9,40 @@ class IntegrationBd:
     Réaliser des requêtes dans la base de données """
 
     def __init__(self):
-
         home = os.path.expanduser("~")
-        self.fichier = f"{home}/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/Densite/"
+        # TODO mettre le lien relatif du schemin
+        self.fichier = f"{home}/.local/share/QGIS/QGIS3/profiles/default/python/plugins/Densite/"
 
-        with open(f"{self.fichier}Connexion/id_mdp.json", "r") as f:
+        with open(f"{self.fichier}connexion/id_mdp.json", "r") as f:
             identifiants = json.load(f)
             f.close()
 
-        id_database = (valeur for valeur in identifiants.values())
+        id_database = iter(identifiants.values())
         [self.user, self.password, self.host, self.port, self.bd] = id_database
 
-    def temps_ecouler(self, seconde):
+    def database_connexion_cursor(self):
+        connection = psycopg2.connect(user=self.user,
+                                      password=self.password,
+                                      host=self.host,
+                                      port=self.port,
+                                      database=self.bd)
+
+        cursor = connection.cursor()
+        return connection, cursor
+
+    @staticmethod
+    def temps_ecouler(seconde: int) -> str:
+        """
+        Pour connaitre le temps écoulé
+        """
         seconds = seconde % (24 * 3600)
         hour = int(seconds // 3600)
         seconds %= 3600
         minutes = int(seconds // 60)
         seconds %= 60
-        return f"{hour}h: {minutes}mn : {int(seconds)}sec" if hour > 0 else f"{minutes}mn : {int(seconds)}sec"
+        return f"{hour}h: {minutes}mn : {seconds}sec" if hour > 0 else f"{minutes}mn : {seconds}sec"
 
-    def connection_bd(self, requete):
+    def connection_bd(self, requete: str) -> list:
         """Pour se connecter à la base de données"""
         connection = None
         cursor = None
@@ -41,14 +50,7 @@ class IntegrationBd:
 
         if requete:
             try:
-                connection = psycopg2.connect(user=self.user,
-                                              password=self.password,
-                                              host=self.host,
-                                              port=self.port,
-                                              database=self.bd)
-
-                cursor = connection.cursor()
-
+                connection, cursor = self.database_connexion_cursor()
                 cursor.execute(requete)
                 record = cursor.fetchall()
 
@@ -63,18 +65,24 @@ class IntegrationBd:
                     # self.alerteInfos(u"La requete a bien été executée", "T", "green")
         return record
 
-    def integration(self):
+    def integration(self) -> list:
         """Récupération des fichier SQL et execution des requetes pour l'intégration des données dans la base"""
         erreurs = []
+        connection, cursor = self.database_connexion_cursor()
+        connection, cursor = self.create_table_and_trigger(connection, cursor)
+        cursor.close()
+        connection.close()
 
-        connection = psycopg2.connect(user=self.user,
-                                      password=self.password,
-                                      host=self.host,
-                                      port=self.port,
-                                      database=self.bd)
-        cursor = connection.cursor()
+        return erreurs
 
+    def create_table_and_trigger(self, connection, cursor):
+        """
+        @param connection:
+        @param cursor:
+        """
         listes_dossiers = ["Creation", "Trigger"]
+        erreurs = []
+
         # Creation des tables et des triggers
         for dossier in listes_dossiers:
             for subdir, dirs, fichier in os.walk(f"{self.fichier}requetes/{dossier}/"):
@@ -82,19 +90,16 @@ class IntegrationBd:
                     if name.endswith(".sql"):
                         filepath = subdir + os.sep + name
                         with open(filepath, 'r') as fd:
-                            sqlFile = fd.read()
+                            sql_file = fd.read()
                             fd.close()
-                            reponse = self.execution_requete_sql(connection, cursor, sqlFile)
-                            if reponse:
+                            if reponse := self.execution_requete_sql(connection, cursor, sql_file):
                                 erreurs.append(reponse)
 
-        cursor.close()
-        connection.close()
+        return connection, cursor
 
-        return erreurs
-
-    def execution_requete_sql(self, connection, cursor, requete):
+    def execution_requete_sql(self, connection: psycopg2, cursor: psycopg2, requete: str) -> None or psycopg2.Error:
         """Execution requete SQL"""
+        print(f"connection : {type(connection)}")
         erreur = None
         try:
             cursor.execute(requete)
@@ -106,15 +111,10 @@ class IntegrationBd:
 
         return erreur
 
-    def insert_donnees_bd(self, data_global, fichier):
+    def insert_donnees_bd(self, data_global: list, fichier: str) -> bool:
         """Insertion des données dans la base"""
         erreur = False
-        connection = psycopg2.connect(user=self.user,
-                                      password=self.password,
-                                      host=self.host,
-                                      port=self.port,
-                                      database=self.bd)
-        cursor = connection.cursor()
+        connection, cursor = self.database_connexion_cursor()
 
         chemin = f"{self.fichier}requetes/Insertion/{fichier}.sql"
         with open(chemin, 'r') as fd:
@@ -137,18 +137,18 @@ class IntegrationBd:
 
         return erreur
 
-    def recup_valeur_enregistrements_ocs(self, table_ocs, champs_code_ocs):
+    @staticmethod
+    def recup_valeur_enregistrements_ocs(table_ocs: str, champs_code_ocs: str) -> list:
         """Récupérer les données liées à la base de données"""
         ocs_table = QgsProject.instance().mapLayersByName(table_ocs)[0]
-        data_global = []
+        return [
+            (int(feat_ocs[champs_code_ocs]), feat_ocs.geometry().asWkt())
+            for feat_ocs in ocs_table.getFeatures()
+            if feat_ocs.geometry() and feat_ocs.geometry() != NULL
+        ]
 
-        for feat_ocs in ocs_table.getFeatures():  # request
-            if feat_ocs.geometry() and feat_ocs.geometry() != NULL:
-                data_global.append((int(feat_ocs[champs_code_ocs]), feat_ocs.geometry().asWkt()))
-
-        return data_global
-
-    def recup_valeur_enregistrements_commune(self, table_commune, champs_nom, champs_insee, champs_dept):
+    @staticmethod
+    def recup_valeur_enregistrements_commune(table_commune: str, champs_nom: str, champs_insee: str, champs_dept: str) -> list:
         """Récupérer les données liées à la base de données"""
         commune_table = QgsProject.instance().mapLayersByName(table_commune)[0]
 
