@@ -8,8 +8,11 @@ class Statistiques(IntegrationBd):
       Elle hérite de la classe Intégration"""
 
     def verification_identifiant_connexion_bd(self) -> bool:
-        """Pour ouvrir le fichier de connexion, permettant de récupérer les informations de connexion à
-        la base de données"""
+        """
+        Pour ouvrir le fichier de connexion, permettant de récupérer les informations de connexion à
+        la base de données
+        @return:
+        """
 
         # Identifiant et mot de passe de l'utilisateur de la base de données.
         identifiant_erronner = False
@@ -29,13 +32,17 @@ class Statistiques(IntegrationBd):
         return identifiant_erronner
 
     def generateur(self, liste_communes: list) -> None:
-        chemin = f"{self.fichier}requetes/Selection/stat.sql"
+        """
+        @param liste_communes:
+        """
+        chemin = f"{self.fichier}requetes/selections/stat.sql"
         with open(chemin, 'r') as fd:
             requete = fd.read()
             fd.close()
 
-        requete_complet = (tuple(liste_communes) if len(liste_communes) > 1 else (
-            f"('{liste_communes[0]}')" if len(liste_communes) == 1 else ""))
+        requete_complet = (tuple(liste_communes) if len(liste_communes) > 1 else
+                           (f"('{liste_communes[0]}')" if len(liste_communes) == 1 else ""))
+
         if requete_complet:
             requete = requete.format(requete_complet)
 
@@ -43,26 +50,33 @@ class Statistiques(IntegrationBd):
             self.realisation_camembert_stat(resultat, liste_communes)
 
     def realisation_camembert_stat(self, data_stat: list, liste_communes: list):
-        """Pour faire de la presentation statistique"""
-
+        """
+        Pour faire de la presentation statistique
+        @param data_stat:
+        @param liste_communes:
+        """
         plt.figure(figsize=(10, 7))
 
-        labels, colors, enregistrement = self.appliquer_coulours(data_stat)
+        labels, colors, enregistrement = self.appliquer_couleurs(data_stat)
         sizes = enregistrement
 
         plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=50)  # shadow=True,
         plt.axis('equal')
 
         titre = ', '.join(liste_communes)
-        # En fonction du nombre de commune.
+        # En fonction du nombre de communes.
         titre_complet = f"COMMUNE : {titre}" if len(liste_communes) == 1 else f"COMMUNES: {titre}"
         plt.title(titre_complet, fontname="Times New Roman", size=15, weight='bold')
 
         plt.savefig('PieChart01.png')
         plt.show()
 
-    def appliquer_coulours(self, data_stat) -> tuple[list, list, list]:
-        """Appliquer les couleurs dans les résultats statistiques"""
+    def appliquer_couleurs(self, data_stat) -> tuple[list, list, list]:
+        """
+        Appliquer les couleurs dans les résultats statistiques
+        @param data_stat:
+        @return:
+        """
         labels = []
         colors = []
         enregistrement = []
@@ -80,7 +94,8 @@ class Statistiques(IntegrationBd):
         """
         @param colors:
         @param nom_classe:
-        returns: """
+        returns: The code color in list
+        """
         classe = ['Territoires artificialisés', 'Territoire agricole', 'Forêts et milieux semi-naturels', 'Zones humides', 'Surfaces en eau']
         code_couleur = ["#e6004d", "#ffffa8", "#80ff00", "#a6a6ff", "#00ccf2"]
 
@@ -88,4 +103,5 @@ class Statistiques(IntegrationBd):
             if couleur == nom_classe:
                 colors.append(code)
                 break
+
         return colors

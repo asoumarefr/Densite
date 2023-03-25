@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  DensiteOCS
@@ -30,19 +29,19 @@ L'utilisateur doit pouvoir indiquer un territoire (à savoir une commune ou un E
 class Initiatlisation:
     """ Second pour contenir quelques fonctions qui seront utilisées dans le fichier principale CheckOptyce.py """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Le constructeur de ma classe
         Il prend pour attribut de classe les *** """
 
-    def name(self):
+    def name(self) -> str:
         """Le nom de l'outil"""
         return u"Densité"
 
-    def version(self):
+    def version(self) -> str:
         """La version de l'outil"""
         return "0.1"
 
-    def description(self):
+    def description(self) -> str:
         """Description de l'outil"""
         return """Un chargé de mission souhaite connaître la surface et le pourcentage de différentes 
         classes d'occupation des sols sur différents types de territoire de son département des Hautes-Pyrénées (65).\n
@@ -51,35 +50,33 @@ class Initiatlisation:
         L'utilisateur doit pouvoir indiquer un territoire (à savoir une commune ou un EPCI) sur lequel il veut obtenir ces informations agrégées.
         """
 
-    def qgisMinimumVersion(self):
+    def qgisMinimumVersion(self) -> str:
         return "3.0"
 
-    def experimental(self):
+    def experimental(self) -> bool:
         """S'il s'agit d'un plugin expériemental"""
         return False
 
-    def author(self):
+    def author(self) -> str:
         """Le Nom des auteurs"""
         return u"SOUMARE Abdoulayi"
 
-    def authorName(self):
+    def author_name(self) -> str:
         """Renvoie au nom des auteurs"""
         return self.author()
 
-    def email(self):
+    def email(self) -> str:
         return "abdoulayisoumare at gmail dot com"
 
-    def icon(self):
+    def icon(self) -> str:
         return "images/icon.png"
 
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
     """Load DensiteOCS class from file DensiteOCS.
-
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
     from .densite import DensiteOCS
     return DensiteOCS(iface)
